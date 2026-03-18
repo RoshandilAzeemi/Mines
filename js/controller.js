@@ -1,17 +1,30 @@
 /* ============================================================
-   CONTROLLER — Event listeners & game loop
-   Mines Game · CS 1XD3
+   controller.js
+   Roshan Azeemi
+   March 2026
+   CONTROLLER — Binds all event listeners, manages the game
+   loop, and coordinates between the Model and View layers.
+   Mines Game - CS 1XD3
    ============================================================ */
 
+/**
+ * Coordinates user interaction between the Model and View.
+ */
 class Controller {
+  /**
+   * Create the Controller and instantiate the View and Player.
+   */
   constructor() {
-    this.view   = new View();
+    this.view = new View();
     this.player = new Player();
-    this.game   = null;
+    this.game = null;
   }
 
   /* ===== BOOT ===== */
 
+  /**
+   * Initialize the app — show the splash screen and bind events.
+   */
   init() {
     this._showSplash();
     this._bindGlobalEvents();
@@ -19,6 +32,10 @@ class Controller {
 
   /* ---- Splash ---- */
 
+  /**
+   * Display the splash screen with the canvas banner and
+   * reveal the Start button after a 2-second delay.
+   */
   _showSplash() {
     this.view.showSplash();
     this.view.drawSplash();
@@ -32,6 +49,11 @@ class Controller {
 
   /* ---- Bind permanent listeners ---- */
 
+  /**
+   * Attach all permanent event listeners using addEventListener.
+   * Covers start, difficulty selection, tile clicks, help,
+   * result buttons, and history reset.
+   */
   _bindGlobalEvents() {
     // Start button
     document.getElementById('btn-start').addEventListener('click', () => {
@@ -81,6 +103,9 @@ class Controller {
 
   /* ---- Difficulty picker ---- */
 
+  /**
+   * Transition to the difficulty picker screen.
+   */
   _showDifficultyPicker() {
     this.view.showDifficulty();
     this.view.hideHistory();
@@ -88,6 +113,10 @@ class Controller {
 
   /* ---- Start round ---- */
 
+  /**
+   * Create a new Game and render the board.
+   * @param {'easy'|'medium'|'hard'} difficulty - chosen level
+   */
   _startGame(difficulty) {
     this.game = new Game(difficulty);
     this.view.showGame();
@@ -98,6 +127,10 @@ class Controller {
 
   /* ---- Tile click ---- */
 
+  /**
+   * Handle a tile click — reveal the tile and check for game over.
+   * @param {number} index - the tile index that was clicked
+   */
   _onTileClick(index) {
     if (!this.game || this.game.gameOver) return;
 
@@ -112,6 +145,10 @@ class Controller {
 
   /* ---- End round ---- */
 
+  /**
+   * Finalize the round — record the result, reveal the full
+   * board, show the result overlay, and display history.
+   */
   _endRound() {
     const roundScore = this._calcRoundScore();
     this.player.addRound(this.game.difficulty, this.game.won, roundScore);
@@ -129,6 +166,11 @@ class Controller {
     }, 700);
   }
 
+  /**
+   * Calculate the score for the current round based on
+   * difficulty multiplier and diamonds found.
+   * @returns {number} the round score
+   */
   _calcRoundScore() {
     const multipliers = { easy: 10, medium: 25, hard: 50 };
     const mult = multipliers[this.game.difficulty] || 10;

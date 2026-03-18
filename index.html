@@ -1,3 +1,12 @@
+<!--
+  index.html
+  Roshan Azeemi
+  March 2026
+  Main HTML page for the Mines game. Contains the splash screen,
+  difficulty picker, game board, result overlay, help modal, and
+  history panel. All interactive logic is in the js/ folder.
+  Mines Game - CS 1XD3
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,17 +35,17 @@
         <div class="diff-card" data-difficulty="easy" tabindex="0">
           <span class="emoji">😊</span>
           <span class="label">Easy</span>
-          <span class="sub">3 Bombs</span>
+          <span class="sub">1 Bomb</span>
         </div>
         <div class="diff-card" data-difficulty="medium" tabindex="0">
           <span class="emoji">😰</span>
           <span class="label">Medium</span>
-          <span class="sub">6 Bombs</span>
+          <span class="sub">3 Bombs</span>
         </div>
         <div class="diff-card" data-difficulty="hard" tabindex="0">
           <span class="emoji">💀</span>
           <span class="label">Hard</span>
-          <span class="sub">9 Bombs</span>
+          <span class="sub">5 Bombs</span>
         </div>
       </div>
     </div>
@@ -61,6 +70,14 @@
           <div class="value" id="hud-difficulty">—</div>
           <div class="label">Difficulty</div>
         </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar-container">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-label" id="progress-label">0%</div>
       </div>
 
       <!-- Board -->
@@ -108,7 +125,7 @@
           <li><strong>Winning:</strong> Find all diamonds on the board to win the round.</li>
           <li><strong>Losing:</strong> Hit a bomb and the round ends immediately.</li>
           <li><strong>Scoring:</strong> Each diamond found earns points. Harder difficulties give more points per diamond (Easy: 10 · Medium: 25 · Hard: 50).</li>
-          <li><strong>Difficulty:</strong> Easy has 3 bombs, Medium has 6, Hard has 9 — out of 25 tiles.</li>
+          <li><strong>Difficulty:</strong> Easy has 1 bomb, Medium has 3, Hard has 5 — out of 25 tiles.</li>
           <li><strong>History:</strong> Your scores and win/loss record are saved automatically.</li>
         </ul>
         <button id="btn-close-help" class="btn btn-primary close-modal">Got It</button>

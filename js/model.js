@@ -1,6 +1,10 @@
 /* ============================================================
-   MODEL — Game & Player classes
-   Mines Game · CS 1XD3
+   model.js
+   Roshan Azeemi
+   March 2026
+   MODEL — Contains the Game and Player classes that track all
+   game state (board, score, history). No DOM access here.
+   Mines Game - CS 1XD3
    ============================================================ */
 
 /**
@@ -8,33 +12,38 @@
  */
 class Game {
   static DIFFICULTIES = {
-    easy:   { label: 'Easy',   bombs: 3  },
-    medium: { label: 'Medium', bombs: 6  },
-    hard:   { label: 'Hard',   bombs: 9  },
+    easy: { label: 'Easy', bombs: 1 },
+    medium: { label: 'Medium', bombs: 3 },
+    hard: { label: 'Hard', bombs: 5 },
   };
 
   static BOARD_SIZE = 25; // 5 × 5
 
   /**
-   * @param {'easy'|'medium'|'hard'} difficulty
+   * Create a new Game instance.
+   * @param {'easy'|'medium'|'hard'} difficulty - the chosen difficulty level
    */
   constructor(difficulty = 'easy') {
-    this.difficulty  = difficulty;
-    this.bombCount   = Game.DIFFICULTIES[difficulty].bombs;
-    this.board       = [];     // 'diamond' | 'bomb'
-    this.revealed    = [];     // boolean per tile
+    this.difficulty = difficulty;
+    this.bombCount = Game.DIFFICULTIES[difficulty].bombs;
+    this.board = [];     // 'diamond' | 'bomb'
+    this.revealed = [];     // boolean per tile
     this.diamondsFound = 0;
     this.totalDiamonds = Game.BOARD_SIZE - this.bombCount;
-    this.gameOver    = false;
-    this.won         = false;
+    this.gameOver = false;
+    this.won = false;
     this._initBoard();
   }
 
   /* ---- private ---- */
 
+  /**
+   * Build the board array by filling it with diamonds and then
+   * placing bombs at random positions.
+   */
   _initBoard() {
     // Fill with diamonds, then place bombs randomly
-    this.board    = new Array(Game.BOARD_SIZE).fill('diamond');
+    this.board = new Array(Game.BOARD_SIZE).fill('diamond');
     this.revealed = new Array(Game.BOARD_SIZE).fill(false);
 
     const bombIndices = new Set();
@@ -47,8 +56,9 @@ class Game {
   /* ---- public ---- */
 
   /**
-   * Reveal a tile. Returns the tile type ('diamond' | 'bomb').
-   * Throws if game is already over or tile already revealed.
+   * Reveal a tile and return its type.
+   * @param {number} index - the tile index (0 to BOARD_SIZE - 1)
+   * @returns {string} 'diamond' or 'bomb'
    */
   reveal(index) {
     if (this.gameOver) throw new Error('Game is already over');
@@ -72,17 +82,25 @@ class Game {
     return 'diamond';
   }
 
-  /** Reveal all tiles (used to show board at end of round). */
+  /**
+   * Reveal all tiles (used to show the full board at end of round).
+   */
   revealAll() {
     this.revealed.fill(true);
   }
 
-  /** Number of safe tiles remaining. */
+  /**
+   * Number of safe tiles remaining.
+   * @returns {number} diamonds left to find
+   */
   get diamondsRemaining() {
     return this.totalDiamonds - this.diamondsFound;
   }
 
-  /** Percentage progress (0–100). */
+  /**
+   * Percentage progress through the round.
+   * @returns {number} integer from 0 to 100
+   */
   get progress() {
     return Math.round((this.diamondsFound / this.totalDiamonds) * 100);
   }
@@ -96,26 +114,33 @@ class Player {
   static STORAGE_KEY = 'mines_player_data';
 
   constructor() {
-    this.score        = 0;
+    this.score = 0;
     this.roundsPlayed = 0;
-    this.history      = [];   // { difficulty, result, score, date }
+    this.history = [];   // { difficulty, result, score, date }
     this._load();
   }
 
   /* ---- persistence ---- */
 
+  /**
+   * Load player data from localStorage. If the data is
+   * corrupted or missing, the player starts fresh.
+   */
   _load() {
     try {
       const raw = localStorage.getItem(Player.STORAGE_KEY);
       if (raw) {
         const data = JSON.parse(raw);
-        this.score        = data.score        ?? 0;
+        this.score = data.score ?? 0;
         this.roundsPlayed = data.roundsPlayed ?? 0;
-        this.history      = data.history      ?? [];
+        this.history = data.history ?? [];
       }
     } catch { /* corrupted — start fresh */ }
   }
 
+  /**
+   * Persist the current player data to localStorage.
+   */
   _save() {
     localStorage.setItem(Player.STORAGE_KEY, JSON.stringify(this.toJSON()));
   }
@@ -141,20 +166,28 @@ class Player {
     this._save();
   }
 
-  /** Highest single-round score ever. */
+  /**
+   * Return the highest single-round score ever recorded.
+   * @returns {number} the high score, or 0 if no rounds played
+   */
   getHighScore() {
     if (this.history.length === 0) return 0;
     return Math.max(...this.history.map(h => h.score));
   }
 
-  /** Win-rate percentage. */
+  /**
+   * Calculate the player's overall win rate.
+   * @returns {number} integer percentage 0-100, or 0 if no rounds played
+   */
   getWinRate() {
     if (this.history.length === 0) return 0;
     const wins = this.history.filter(h => h.result === 'win').length;
     return Math.round((wins / this.history.length) * 100);
   }
 
-  /** Clear all history (settings reset). */
+  /**
+   * Clear all history and reset the score to zero.
+   */
   reset() {
     this.score = 0;
     this.roundsPlayed = 0;
@@ -162,11 +195,15 @@ class Player {
     this._save();
   }
 
+  /**
+   * Return a plain object for JSON serialization.
+   * @returns {Object} player data suitable for localStorage
+   */
   toJSON() {
     return {
-      score:        this.score,
+      score: this.score,
       roundsPlayed: this.roundsPlayed,
-      history:      this.history,
+      history: this.history,
     };
   }
 }

@@ -1,9 +1,19 @@
 /* ============================================================
-   VIEW — DOM rendering & Canvas splash
-   Mines Game · CS 1XD3
+   view.js
+   Roshan Azeemi
+   March 2026
+   VIEW — Handles all DOM rendering, the canvas splash screen,
+   the game board display, HUD updates, overlays, and history.
+   Mines Game - CS 1XD3
    ============================================================ */
 
+/**
+ * Manages all visual output for the Mines game.
+ */
 class View {
+  /**
+   * Cache references to all DOM elements used by the view.
+   */
   constructor() {
     /* --- screen refs --- */
     this.splashScreen    = document.getElementById('splash-screen');
@@ -28,6 +38,10 @@ class View {
     this.resultMsg       = document.getElementById('result-msg');
     this.helpModal       = document.getElementById('help-modal');
 
+    /* --- progress bar --- */
+    this.progressFill    = document.getElementById('progress-fill');
+    this.progressLabel   = document.getElementById('progress-label');
+
     /* --- history --- */
     this.historyPanel    = document.getElementById('history-panel');
     this.historyList     = document.getElementById('history-list');
@@ -38,17 +52,28 @@ class View {
 
   /* ===== SCREENS ===== */
 
+  /**
+   * Switch to the given screen element, hiding all others.
+   * @param {HTMLElement} screen - the screen element to activate
+   */
   _showScreen(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     screen.classList.add('active');
   }
 
+  /** Show the splash screen. */
   showSplash()      { this._showScreen(this.splashScreen); }
+  /** Show the difficulty picker screen. */
   showDifficulty()  { this._showScreen(this.diffScreen); }
+  /** Show the main game screen. */
   showGame()        { this._showScreen(this.gameScreen); }
 
   /* ===== CANVAS SPLASH ===== */
 
+  /**
+   * Draw the splash banner on the canvas using JS drawing commands.
+   * Includes a gradient background, emoji icons, glowing line, and title.
+   */
   drawSplash() {
     const c   = this.canvas;
     const dpr = window.devicePixelRatio || 1;
@@ -116,13 +141,19 @@ class View {
     ctx.fillText('Find the Diamonds · Dodge the Bombs', w / 2, h * 0.78);
   }
 
-  /** Show "Start" button after delay. */
+  /**
+   * Fade in the Start Game button on the splash screen.
+   */
   revealStartButton() {
     this.startArea.classList.add('visible');
   }
 
   /* ===== BOARD ===== */
 
+  /**
+   * Create and render the 5x5 tile grid from the game model.
+   * @param {Game} game - the current Game instance
+   */
   renderBoard(game) {
     this.boardEl.innerHTML = '';
     for (let i = 0; i < Game.BOARD_SIZE; i++) {
@@ -138,12 +169,21 @@ class View {
     }
   }
 
+  /**
+   * Reveal a single tile with the appropriate icon and style.
+   * @param {number} index - tile position (0-24)
+   * @param {string} type  - 'diamond' or 'bomb'
+   */
   revealTile(index, type) {
     const tile = this.boardEl.children[index];
     if (!tile) return;
     this._applyReveal(tile, type);
   }
 
+  /**
+   * Reveal every tile on the board (called at end of round).
+   * @param {Game} game - the current Game instance
+   */
   revealAllTiles(game) {
     for (let i = 0; i < Game.BOARD_SIZE; i++) {
       const tile = this.boardEl.children[i];
@@ -153,6 +193,11 @@ class View {
     }
   }
 
+  /**
+   * Apply revealed styling and icon to a tile element.
+   * @param {HTMLElement} tile - the tile button element
+   * @param {string}      type - 'diamond' or 'bomb'
+   */
   _applyReveal(tile, type) {
     tile.classList.add('revealed', type);
     tile.textContent = type === 'diamond' ? '💎' : '💣';
@@ -160,12 +205,27 @@ class View {
 
   /* ===== HUD ===== */
 
+  /**
+   * Refresh the HUD stats and progress bar from the model.
+   * @param {Player} player - the current Player instance
+   * @param {Game}   game   - the current Game instance
+   */
   updateHUD(player, game) {
     this.hudScore.textContent      = player.score + this._calcRoundScore(game);
     this.hudDiamonds.textContent   = `${game.diamondsFound}/${game.totalDiamonds}`;
     this.hudDifficulty.textContent = Game.DIFFICULTIES[game.difficulty].label;
+
+    // Progress bar
+    const pct = game.progress;
+    this.progressFill.style.width  = pct + '%';
+    this.progressLabel.textContent = pct + '%';
   }
 
+  /**
+   * Calculate the score earned so far in the current round.
+   * @param {Game} game - the current Game instance
+   * @returns {number} the round score
+   */
   _calcRoundScore(game) {
     const multipliers = { easy: 10, medium: 25, hard: 50 };
     return game.diamondsFound * (multipliers[game.difficulty] || 10);
@@ -173,6 +233,11 @@ class View {
 
   /* ===== RESULT OVERLAY ===== */
 
+  /**
+   * Display the win/loss result overlay.
+   * @param {boolean} won        - whether the player won the round
+   * @param {number}  roundScore - points earned this round
+   */
   showResult(won, roundScore) {
     this.resultIcon.textContent  = won ? '🏆' : '💣';
     this.resultTitle.textContent = won ? 'You Win!' : 'Boom!';
@@ -182,17 +247,25 @@ class View {
     this.resultOverlay.classList.add('active');
   }
 
+  /** Hide the result overlay. */
   hideResult() {
     this.resultOverlay.classList.remove('active');
   }
 
   /* ===== HELP MODAL ===== */
 
+  /** Show the help / how-to-play modal. */
   showHelp() { this.helpModal.classList.add('active'); }
+  /** Hide the help modal. */
   hideHelp() { this.helpModal.classList.remove('active'); }
 
   /* ===== HISTORY ===== */
 
+  /**
+   * Render the player's game history panel with stats and
+   * a scrollable list of recent rounds.
+   * @param {Player} player - the Player instance
+   */
   renderHistory(player) {
     this.statRounds.textContent    = player.roundsPlayed;
     this.statHighScore.textContent = player.getHighScore();
@@ -220,6 +293,7 @@ class View {
     this.historyPanel.style.display = 'block';
   }
 
+  /** Hide the history panel. */
   hideHistory() {
     this.historyPanel.style.display = 'none';
   }
