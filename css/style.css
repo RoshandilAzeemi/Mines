@@ -339,9 +339,35 @@ body {
 
 .overlay-card .result-icon { font-size: 3.5rem; margin-bottom: 8px; }
 .overlay-card h2 { font-size: 1.4rem; margin-bottom: 6px; }
-.overlay-card .result-msg { color: var(--text-dim); font-size: .9rem; margin-bottom: 20px; }
+.overlay-card .result-msg { color: var(--text-dim); font-size: .9rem; margin-bottom: 16px; }
 
 .overlay-card .btn + .btn { margin-left: 8px; }
+
+/* --- Overlay history --- */
+.overlay-history {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--glass-border);
+}
+.overlay-history h3 {
+  font-size: .9rem;
+  color: var(--accent);
+  margin-bottom: 10px;
+  text-align: center;
+}
+.overlay-history .history-list {
+  max-height: 120px;
+}
+
+.overlay {
+  overflow-y: auto;
+}
+.overlay-card {
+  max-height: 90vh;
+  overflow-y: auto;
+}
 
 /* ---------- Help Modal ---------- */
 .modal {

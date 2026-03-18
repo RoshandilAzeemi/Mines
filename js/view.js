@@ -42,6 +42,12 @@ class View {
     this.progressFill    = document.getElementById('progress-fill');
     this.progressLabel   = document.getElementById('progress-label');
 
+    /* --- overlay history --- */
+    this.overlayRounds    = document.getElementById('overlay-rounds');
+    this.overlayHighScore = document.getElementById('overlay-highscore');
+    this.overlayWinRate   = document.getElementById('overlay-winrate');
+    this.overlayHistList  = document.getElementById('overlay-history-list');
+
     /* --- history --- */
     this.historyPanel    = document.getElementById('history-panel');
     this.historyList     = document.getElementById('history-list');
@@ -234,16 +240,36 @@ class View {
   /* ===== RESULT OVERLAY ===== */
 
   /**
-   * Display the win/loss result overlay.
+   * Display the win/loss result overlay with history.
    * @param {boolean} won        - whether the player won the round
    * @param {number}  roundScore - points earned this round
+   * @param {Player}  player     - the Player instance for history display
    */
-  showResult(won, roundScore) {
+  showResult(won, roundScore, player) {
     this.resultIcon.textContent  = won ? '🏆' : '💣';
     this.resultTitle.textContent = won ? 'You Win!' : 'Boom!';
     this.resultMsg.textContent   = won
       ? `You cleared all diamonds! +${roundScore} points`
       : `You hit a bomb! +${roundScore} points`;
+
+    // Populate overlay history
+    this.overlayRounds.textContent    = player.roundsPlayed;
+    this.overlayHighScore.textContent = player.getHighScore();
+    this.overlayWinRate.textContent   = player.getWinRate() + '%';
+
+    this.overlayHistList.innerHTML = '';
+    const recent = player.history.slice(-5).reverse();
+    recent.forEach(entry => {
+      const row = document.createElement('div');
+      row.className = 'history-entry';
+      row.innerHTML = `
+        <span class="diff-badge ${entry.difficulty}">${entry.difficulty}</span>
+        <span class="result-badge ${entry.result}">${entry.result === 'win' ? '✅ Win' : '❌ Loss'}</span>
+        <span>+${entry.score}</span>
+      `;
+      this.overlayHistList.appendChild(row);
+    });
+
     this.resultOverlay.classList.add('active');
   }
 

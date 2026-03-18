@@ -111,6 +111,27 @@
         <div id="result-icon" class="result-icon">🏆</div>
         <h2 id="result-title">You Win!</h2>
         <p id="result-msg" class="result-msg"></p>
+
+        <!-- History inside result overlay -->
+        <div class="overlay-history">
+          <h3>📊 Your History</h3>
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="val" id="overlay-rounds">0</div>
+              <div class="lbl">Rounds</div>
+            </div>
+            <div class="stat-box">
+              <div class="val" id="overlay-highscore">0</div>
+              <div class="lbl">High Score</div>
+            </div>
+            <div class="stat-box">
+              <div class="val" id="overlay-winrate">0%</div>
+              <div class="lbl">Win Rate</div>
+            </div>
+          </div>
+          <div id="overlay-history-list" class="history-list"></div>
+        </div>
+
         <button id="btn-play-again" class="btn btn-green btn-sm">Play Again</button>
         <button id="btn-quit" class="btn btn-outline btn-sm">Quit</button>
       </div>

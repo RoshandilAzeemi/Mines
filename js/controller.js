@@ -159,10 +159,9 @@ class Controller {
       this.view.revealAllTiles(this.game);
     }, 300);
 
-    // Show result overlay
+    // Show result overlay with history
     setTimeout(() => {
-      this.view.showResult(this.game.won, roundScore);
-      this.view.renderHistory(this.player);
+      this.view.showResult(this.game.won, roundScore, this.player);
     }, 700);
   }
 
