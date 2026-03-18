@@ -3,19 +3,22 @@
   Roshan Azeemi
   March 2026
   Main HTML page for the Mines game. Contains the splash screen,
-  difficulty picker, game board, result overlay, help modal, and
-  history panel. All interactive logic is in the js/ folder.
+  difficulty picker, game board, result overlay, help option, and
+  history panel. All interactive logic is in the js/folder.
   Mines Game - CS 1XD3
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Mines — Find the Diamonds, Dodge the Bombs. A mobile-first strategy game for CS 1XD3." />
+  <meta name="description"
+    content="Mines — Find the Diamonds, Dodge the Bombs. A mobile-first strategy game for CS 1XD3." />
   <title>💎 Mines — CS 1XD3</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
   <div id="app">
 
@@ -145,7 +148,8 @@
           <li><strong>Goal:</strong> Tap tiles to uncover 💎 Diamonds and earn points. Avoid 💣 Bombs!</li>
           <li><strong>Winning:</strong> Find all diamonds on the board to win the round.</li>
           <li><strong>Losing:</strong> Hit a bomb and the round ends immediately.</li>
-          <li><strong>Scoring:</strong> Each diamond found earns points. Harder difficulties give more points per diamond (Easy: 10 · Medium: 25 · Hard: 50).</li>
+          <li><strong>Scoring:</strong> Each diamond found earns points. Harder difficulties give more points per
+            diamond (Easy: 10 · Medium: 25 · Hard: 50).</li>
           <li><strong>Difficulty:</strong> Easy has 1 bomb, Medium has 3, Hard has 5 — out of 25 tiles.</li>
           <li><strong>History:</strong> Your scores and win/loss record are saved automatically.</li>
         </ul>
@@ -160,4 +164,5 @@
   <script src="js/view.js"></script>
   <script src="js/controller.js"></script>
 </body>
+
 </html>
