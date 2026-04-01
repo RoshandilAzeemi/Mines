@@ -20,9 +20,9 @@ class View {
     this.diffScreen      = document.getElementById('difficulty-screen');
     this.gameScreen      = document.getElementById('game-screen');
 
-    /* --- splash --- */
+    /* --- splash (may not exist on play.php) --- */
     this.canvas          = document.getElementById('splash-canvas');
-    this.ctx             = this.canvas.getContext('2d');
+    this.ctx             = this.canvas ? this.canvas.getContext('2d') : null;
     this.startArea       = document.getElementById('start-area');
 
     /* --- game --- */
@@ -68,7 +68,7 @@ class View {
   }
 
   /** Show the splash screen. */
-  showSplash()      { this._showScreen(this.splashScreen); }
+  showSplash()      { if (this.splashScreen) this._showScreen(this.splashScreen); }
   /** Show the difficulty picker screen. */
   showDifficulty()  { this._showScreen(this.diffScreen); }
   /** Show the main game screen. */
@@ -81,6 +81,7 @@ class View {
    * Includes a gradient background, emoji icons, glowing line, and title.
    */
   drawSplash() {
+    if (!this.canvas || !this.ctx) return;
     const c   = this.canvas;
     const dpr = window.devicePixelRatio || 1;
     const w   = Math.min(420, window.innerWidth - 32);
@@ -151,7 +152,7 @@ class View {
    * Fade in the Start Game button on the splash screen.
    */
   revealStartButton() {
-    this.startArea.classList.add('visible');
+    if (this.startArea) this.startArea.classList.add('visible');
   }
 
   /* ===== BOARD ===== */

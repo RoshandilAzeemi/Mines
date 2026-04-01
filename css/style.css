@@ -658,6 +658,242 @@ body {
   gap: 8px;
 }
 
+/* ---------- Login Card ---------- */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  margin-top: 60px;
+  backdrop-filter: blur(16px);
+  animation: slideUp .5s ease;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.login-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.login-header .heading {
+  font-size: 1.8rem;
+  letter-spacing: .08em;
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-header .subtext {
+  margin-top: 4px;
+}
+
+/* ---------- Form Elements ---------- */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: .95rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.form-input.input-error {
+  border-color: var(--red);
+  box-shadow: 0 0 12px var(--red-glow);
+}
+
+.form-error {
+  font-size: .78rem;
+  color: var(--red);
+  margin-top: 4px;
+  min-height: 1.2em;
+}
+
+.btn-full {
+  width: 100%;
+  margin-top: 10px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* ---------- Message Card ---------- */
+.message-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 40px 28px;
+  margin-top: 80px;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  animation: slideUp .5s ease;
+}
+
+.msg-icon {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+}
+
+.message-card .heading {
+  margin-bottom: 8px;
+}
+
+.message-card .subtext {
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* ---------- User Bar ---------- */
+.user-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  margin-bottom: 4px;
+}
+
+.user-email {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--accent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60%;
+}
+
+/* ---------- Leaderboard ---------- */
+.leaderboard-section {
+  width: 100%;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  backdrop-filter: blur(12px);
+  margin-bottom: 12px;
+  animation: slideUp .5s ease;
+}
+
+.leaderboard-section .heading {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+
+.stats-row-lg {
+  margin-bottom: 10px;
+}
+
+.stats-row-lg .stat-box .val {
+  font-size: 1.5rem;
+}
+
+.stat-green {
+  color: var(--green) !important;
+}
+
+.stat-red {
+  color: var(--red) !important;
+}
+
+.leaderboard-table-wrapper {
+  overflow-x: auto;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+
+.leaderboard-table th {
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--glass-border);
+  text-align: left;
+}
+
+.leaderboard-table td {
+  padding: 10px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, .04);
+  color: var(--text);
+}
+
+.leaderboard-table tr:last-child td {
+  border-bottom: none;
+}
+
+.leaderboard-table .highlight-row td {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.rank-cell {
+  font-size: 1.1rem;
+  text-align: center;
+  width: 36px;
+}
+
+.player-cell {
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.lb-actions .btn {
+  text-decoration: none;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 380px) {
   .board {
@@ -674,5 +910,15 @@ body {
 
   .diff-card {
     padding: 14px 10px;
+  }
+
+  .login-card,
+  .message-card {
+    padding: 28px 18px;
+    margin-top: 40px;
+  }
+
+  .leaderboard-table {
+    font-size: .78rem;
   }
 }

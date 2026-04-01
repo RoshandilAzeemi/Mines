@@ -111,7 +111,6 @@ class Game {
  * Represents the player and their persistent history.
  */
 class Player {
-  static STORAGE_KEY = 'mines_player_data';
 
   constructor() {
     this.score = 0;
@@ -123,26 +122,18 @@ class Player {
   /* ---- persistence ---- */
 
   /**
-   * Load player data from localStorage. If the data is
-   * corrupted or missing, the player starts fresh.
+   * No-op — persistence is now handled by the PHP/MySQL backend.
+   * Player data is tracked in-memory for the current session only.
    */
   _load() {
-    try {
-      const raw = localStorage.getItem(Player.STORAGE_KEY);
-      if (raw) {
-        const data = JSON.parse(raw);
-        this.score = data.score ?? 0;
-        this.roundsPlayed = data.roundsPlayed ?? 0;
-        this.history = data.history ?? [];
-      }
-    } catch { /* corrupted — start fresh */ }
+    // Server-side persistence replaces localStorage
   }
 
   /**
-   * Persist the current player data to localStorage.
+   * No-op — persistence is now handled by the PHP/MySQL backend.
    */
   _save() {
-    localStorage.setItem(Player.STORAGE_KEY, JSON.stringify(this.toJSON()));
+    // Server-side persistence replaces localStorage
   }
 
   /* ---- public ---- */

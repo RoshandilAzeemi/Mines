@@ -4,6 +4,7 @@
    March 2026
    CONTROLLER — Binds all event listeners, manages the game
    loop, and coordinates between the Model and View layers.
+   Modified for server-side integration (play.php / leaderboard).
    Mines Game - CS 1XD3
    ============================================================ */
 
@@ -23,43 +24,23 @@ class Controller {
   /* ===== BOOT ===== */
 
   /**
-   * Initialize the app — show the splash screen and bind events.
+   * Initialize the app — show the difficulty picker and bind events.
+   * (Splash screen is skipped in play.php since the user is already logged in.)
    */
   init() {
-    this._showSplash();
-    this._bindGlobalEvents();
-  }
-
-  /* ---- Splash ---- */
-
-  /**
-   * Display the splash screen with the canvas banner and
-   * reveal the Start button after a 2-second delay.
-   */
-  _showSplash() {
-    this.view.showSplash();
-    this.view.drawSplash();
+    this.view.showDifficulty();
     this.view.hideHistory();
-
-    // Reveal Start button after 2 seconds
-    setTimeout(() => {
-      this.view.revealStartButton();
-    }, 2000);
+    this._bindGlobalEvents();
   }
 
   /* ---- Bind permanent listeners ---- */
 
   /**
    * Attach all permanent event listeners using addEventListener.
-   * Covers start, difficulty selection, tile clicks, help,
-   * result buttons, and history reset.
+   * Covers difficulty selection, tile clicks, help, result buttons,
+   * and the leaderboard form submission.
    */
   _bindGlobalEvents() {
-    // Start button
-    document.getElementById('btn-start').addEventListener('click', () => {
-      this._showDifficultyPicker();
-    });
-
     // Difficulty cards
     document.querySelectorAll('.diff-card').forEach(card => {
       card.addEventListener('click', () => {
@@ -83,32 +64,11 @@ class Controller {
       this.view.hideHelp();
     });
 
-    // Result overlay buttons
-    document.getElementById('btn-play-again').addEventListener('click', () => {
-      this.view.hideResult();
-      this._showDifficultyPicker();
-    });
+    // Leaderboard button — submit leaderboard form with game results
     document.getElementById('btn-quit').addEventListener('click', () => {
-      this.view.hideResult();
-      this.view.hideHistory();
-      this._showSplash();
+      const lbForm = document.getElementById('leaderboard-form');
+      if (lbForm) lbForm.submit();
     });
-
-    // Reset history
-    document.getElementById('btn-reset-history').addEventListener('click', () => {
-      this.player.reset();
-      this.view.renderHistory(this.player);
-    });
-  }
-
-  /* ---- Difficulty picker ---- */
-
-  /**
-   * Transition to the difficulty picker screen.
-   */
-  _showDifficultyPicker() {
-    this.view.showDifficulty();
-    this.view.hideHistory();
   }
 
   /* ---- Start round ---- */
@@ -147,11 +107,20 @@ class Controller {
 
   /**
    * Finalize the round — record the result, reveal the full
-   * board, show the result overlay, and display history.
+   * board, show the result overlay, display history, and
+   * populate the hidden leaderboard form fields.
    */
   _endRound() {
     const roundScore = this._calcRoundScore();
     this.player.addRound(this.game.difficulty, this.game.won, roundScore);
+
+    // Populate hidden leaderboard form (only exists on play.php)
+    const lbScore = document.getElementById('lb-score');
+    const lbDiff  = document.getElementById('lb-difficulty');
+    const lbRes   = document.getElementById('lb-result');
+    if (lbScore) lbScore.value = roundScore;
+    if (lbDiff)  lbDiff.value  = this.game.difficulty;
+    if (lbRes)   lbRes.value   = this.game.won ? 'win' : 'loss';
 
     // Reveal full board after a small delay
     setTimeout(() => {
