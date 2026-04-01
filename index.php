@@ -33,29 +33,14 @@
       <form id="login-form" action="login.php" method="get">
         <div class="form-group">
           <label for="email" class="form-label">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            class="form-input"
-            placeholder="you@example.com"
-            required
-            maxlength="255"
-            autocomplete="email"
-          />
+          <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required
+            maxlength="255" autocomplete="email" />
           <div id="email-error" class="form-error"></div>
         </div>
 
         <div class="form-group">
           <label for="birth_date" class="form-label">Birth Date</label>
-          <input
-            type="date"
-            id="birth_date"
-            name="birth_date"
-            class="form-input"
-            required
-            max="2026-03-31"
-          />
+          <input type="date" id="birth_date" name="birth_date" class="form-input" required max="2026-03-31" />
           <div id="date-error" class="form-error"></div>
         </div>
 
@@ -65,7 +50,7 @@
 
   </div>
 
-  <!-- Email validation script (external for separation of concerns) -->
+  <!-- Email validation script -->
   <script src="js/validation.js"></script>
 </body>
 

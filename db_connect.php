@@ -7,7 +7,7 @@
  * Mines Game - CS 1XD3
  */
 
-// ---- Database credentials (update these for your server) ----
+// ---- Database credentials ----
 $DB_HOST = 'localhost';
 $DB_NAME = 'azeemir_db';
 $DB_USER = 'azeemir_local';
